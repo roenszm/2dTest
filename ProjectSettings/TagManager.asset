@@ -15,7 +15,7 @@ TagManager:
   - 
   - ground
   - environment
-  - 
+  - role
   - 
   - 
   - 
@@ -38,9 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: background
+  - name: Background
     uniqueID: 22407767
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Role
+    uniqueID: 1003693695
     locked: 0
