@@ -65,11 +65,15 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Bomb\BombController.cs" />
     <Compile Include="Assets\Scripts\Effect\EffectController.cs" />
-    <Compile Include="Assets\Scripts\Enemy\AttackState.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BigGuyController.cs" />
     <Compile Include="Assets\Scripts\Enemy\CucumberController.cs" />
-    <Compile Include="Assets\Scripts\Enemy\EnemyBaseState.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyController.cs" />
-    <Compile Include="Assets\Scripts\Enemy\PatrolState.cs" />
+    <Compile Include="Assets\Scripts\Enemy\FSM\AttackState.cs" />
+    <Compile Include="Assets\Scripts\Enemy\FSM\EnemyBaseState.cs" />
+    <Compile Include="Assets\Scripts\Enemy\FSM\PatrolState.cs" />
+    <Compile Include="Assets\Scripts\Enemy\HitPoint.cs" />
+    <Compile Include="Assets\Scripts\Enemy\PirateController.cs" />
+    <Compile Include="Assets\Scripts\IDamageable.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerAnimation.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Reference Include="UnityEngine">

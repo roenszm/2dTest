@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour,IDamageable
 {
     //获得当前对象
     private Rigidbody2D rb;
-    //移动速度
-    public float speed;
-    //跳跃初始力量
-    public float jumpForce;
+    private Animator anim;
+    
 
     /*
     [Header("Player Attributes")]
     public float velocityX;
     public float velocityY;
     */
+    [Header("Attribute")]
+    public float health;
+    public bool isDead;
+    //移动速度
+    public float speed;
+    //跳跃初始力量
+    public float jumpForce;
 
     [Header("Ground Check")]
     //检测player是否落地的检测点
@@ -50,17 +55,29 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        anim.SetBool("dead", isDead);
+        if (isDead)
+        {
+            return;
+        }
         CheckInput();
         //GetPlayerAttributes();
     }
 
     public void FixedUpdate()
     {
+        if (isDead)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
         PhysicsCheck();
         Movement();
         Jump();
@@ -162,5 +179,19 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireCube(groundCheckPoint.position, new Vector3(length, width, 0));
     }
 
-
+    public void GetHit(float damage)
+    {
+        //当玩家处于正在受伤状态时，不能受到其他伤害
+        if (!anim.GetCurrentAnimatorStateInfo(1).IsName("player_hit"))
+        {
+            health -= damage;
+            if (health <= 0)
+            {
+                health = 0;
+                isDead = true;
+            }
+            anim.SetTrigger("hit");
+        }
+       
+    }
 }

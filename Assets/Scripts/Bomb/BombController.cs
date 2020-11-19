@@ -14,6 +14,7 @@ public class BombController : MonoBehaviour
     public float waitTime;  //炸弹待机时间
     public float bombForce; //炸弹爆炸的力量
     public Vector3 bombUp;    //炸弹爆炸时额外增加的向上的方向
+    public float bombDamage;
 
     [Header("Explosion Check")]
     public float explosionRadius;//爆炸范围
@@ -31,10 +32,14 @@ public class BombController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > startTime + waitTime)
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("bomb_off"))
         {
-            anim.Play("bomb_explosion");
+            if (Time.time > startTime + waitTime)
+            {
+                anim.Play("bomb_explosion");
+            }
         }
+        
     }
 
     public void OnDrawGizmos()
@@ -44,7 +49,7 @@ public class BombController : MonoBehaviour
     }
 
     //Animation Event
-    void Explosion()
+    public void Explosion()
     {
         //保证炸弹本身在爆炸时位置不变
         coll.enabled = false;
@@ -57,6 +62,17 @@ public class BombController : MonoBehaviour
             Vector3 relativePos = item.transform.position - transform.position;
             item.GetComponent<Rigidbody2D>().AddForce((relativePos + bombUp) * bombForce, ForceMode2D.Impulse);
 
+            if(item.CompareTag("Bomb") && 
+                item.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("bomb_off"))
+            {
+                item.GetComponent<BombController>().Turnon();
+            }
+
+            if (item.CompareTag("Player"))
+            {
+                item.GetComponent<IDamageable>().GetHit(bombDamage);
+            }
+    
         }
 
     }
@@ -66,4 +82,18 @@ public class BombController : MonoBehaviour
         Destroy(gameObject);
     }
 
+
+    public void Turnoff()
+    {
+        anim.Play("bomb_off");
+        gameObject.layer = LayerMask.NameToLayer("npc");
+
+    }
+
+    public void Turnon()
+    {
+        startTime = Time.time;
+        anim.Play("bomb_on");
+        gameObject.layer = LayerMask.NameToLayer("bomb");
+    }
 }

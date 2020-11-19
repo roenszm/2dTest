@@ -6,6 +6,12 @@ using UnityEngine.UIElements;
 public class EnemyController : MonoBehaviour
 {
     private EnemyBaseState state;
+    private GameObject alarmSign;
+
+    [Header("Attribute")]
+    public float health;
+    public bool isDead;
+    public bool hasBomb;
 
     [Header("Components")]
     public Animator anim;
@@ -28,6 +34,7 @@ public class EnemyController : MonoBehaviour
     public virtual void Init()
     {
         anim = GetComponent<Animator>();
+        alarmSign = transform.GetChild(0).gameObject;
     }
     public void Awake()
     {
@@ -43,6 +50,11 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anim.SetBool("dead", isDead);
+        if (isDead)
+        {
+            return;
+        }
         state.OnState(this);
         anim.SetInteger("state", animState);
     }
@@ -86,12 +98,14 @@ public class EnemyController : MonoBehaviour
 
     public void AttackAction()
     {
+        //以怪物中心点为圆心，attackRange为半径的检测范围
         if (Vector2.Distance(transform.position, targetPoint.position) < attackRange)
         {
             if (Time.time > nextAttack)
             {
                 Debug.Log("进行普通攻击！");
-                //播放攻击动画
+                //设置参数，播放攻击动画
+                anim.SetTrigger("attack");
                 nextAttack = Time.time + attackCD;
             }
         }
@@ -99,21 +113,28 @@ public class EnemyController : MonoBehaviour
 
     public void SkillAction()
     {
+        //以怪物中心点为圆心，skillRange为半径的检测范围
         if (Vector2.Distance(transform.position, targetPoint.position) < skillRange)
         {
             if (Time.time > nextAttack)
             {
                 Debug.Log("对炸弹使用技能！");
-                //播放攻击动画
+                //设置参数，播放攻击动画
+                anim.SetTrigger("skill");
                 nextAttack = Time.time + attackCD;
             }
         }
     }
 
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
     //作为trigger的collider检测到有对象时将其加入targetList
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (!targetList.Contains(collision.transform))
+        if (!targetList.Contains(collision.transform) && !hasBomb)
         {
             targetList.Add(collision.transform);
         }
@@ -122,6 +143,19 @@ public class EnemyController : MonoBehaviour
     public void OnTriggerExit2D(Collider2D collision)
     {
         targetList.Remove(collision.transform);
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        StartCoroutine(ShowAlarm());
+    }
+
+    //协程
+    IEnumerator ShowAlarm()
+    {
+        alarmSign.SetActive(true);
+        yield return new WaitForSeconds(alarmSign.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0)[0].clip.length);
+        alarmSign.SetActive(false);
     }
 
 }

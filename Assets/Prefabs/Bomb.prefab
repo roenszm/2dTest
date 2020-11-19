@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1003693695
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 15
   m_Sprite: {fileID: 21300000, guid: 32b226149aeaa3940998f2a5361bd7b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -155,8 +155,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startTime: 0
   waitTime: 2
-  bombForce: 12
+  bombForce: 7
   bombUp: {x: 0, y: 1.16, z: 0}
+  bombDamage: 3
   explosionRadius: 1.5
   targetLayer:
     serializedVersion: 2
