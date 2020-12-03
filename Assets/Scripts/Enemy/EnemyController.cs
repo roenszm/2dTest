@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         anim.SetBool("dead", isDead);
         if (isDead)
@@ -111,7 +111,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void SkillAction()
+    public virtual void SkillAction()
     {
         //以怪物中心点为圆心，skillRange为半径的检测范围
         if (Vector2.Distance(transform.position, targetPoint.position) < skillRange)
@@ -134,7 +134,7 @@ public class EnemyController : MonoBehaviour
     //作为trigger的collider检测到有对象时将其加入targetList
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (!targetList.Contains(collision.transform) && !hasBomb)
+        if (!targetList.Contains(collision.transform) && !hasBomb && !isDead && !GameManager.instance.gameOver)
         {
             targetList.Add(collision.transform);
         }
@@ -147,7 +147,9 @@ public class EnemyController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(ShowAlarm());
+        if (!isDead&& !GameManager.instance.gameOver)
+
+            StartCoroutine(ShowAlarm());
     }
 
     //协程

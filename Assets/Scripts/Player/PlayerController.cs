@@ -191,6 +191,8 @@ public class PlayerController : MonoBehaviour,IDamageable
                 isDead = true;
             }
             anim.SetTrigger("hit");
+
+            UIManager.instance.UpdateHealth(health);
         }
        
     }
