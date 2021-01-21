@@ -35,6 +35,7 @@ public class EnemyController : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         alarmSign = transform.GetChild(0).gameObject;
+        
     }
     public void Awake()
     {
@@ -45,6 +46,7 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         SwitchState(pState);
+        GameManager.instance.IsEnemy(this);
     }
 
     // Update is called once per frame
@@ -53,6 +55,7 @@ public class EnemyController : MonoBehaviour
         anim.SetBool("dead", isDead);
         if (isDead)
         {
+            GameManager.instance.EnemyDead(this);
             return;
         }
         state.OnState(this);

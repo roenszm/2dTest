@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Bomb\BombController.cs" />
+    <Compile Include="Assets\Scripts\DoorController.cs" />
     <Compile Include="Assets\Scripts\Effect\EffectController.cs" />
     <Compile Include="Assets\Scripts\Enemy\BigGuyController.cs" />
     <Compile Include="Assets\Scripts\Enemy\CaptainController.cs" />

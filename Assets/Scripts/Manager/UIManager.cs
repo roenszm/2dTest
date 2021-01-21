@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
@@ -9,6 +10,7 @@ public class UIManager : MonoBehaviour
     [Header("UI Component")]
     public GameObject healthBar;
     public GameObject pauseMenu;
+    public GameObject gameOverPanel;
 
     public void Awake()
     {
@@ -58,5 +60,9 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void GameOverUI(bool playerDead)
+    {
+        gameOverPanel.SetActive(playerDead);
+    }
 
 }
